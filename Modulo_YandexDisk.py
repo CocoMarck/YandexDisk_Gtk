@@ -79,7 +79,7 @@ def setPath(dir_YD=''):
     
         with open(f'Path-Config.txt', 'w') as source_file:
             source_file.write(text)
-        file_replace = f'./Path-Config.txt cp {path}/config.cfg'
+        file_replace = f'cp ./Path-Config.txt {path}/config.cfg'
     else:
         file_replace = '# Sin archivo, no se detecto Yandex-Disk'
     
