@@ -112,6 +112,12 @@ class Dialog_Start(Gtk.Dialog):
         
         self.entry_excludedirs = Gtk.Entry()
         self.entry_excludedirs.set_placeholder_text('DIR1,DIR2,...')
+        if pathlib.Path('Exclude-Dirs.txt').exists():
+            self.entry_excludedirs.set_text(
+                Util.Text_Read('Exclude-Dirs.txt', 'ModeTextOnly')
+            )
+        else:
+            pass
         hbox.pack_end(self.entry_excludedirs, False, False, 0)
         
         # Seccion Vertical 4 - Sincronisar
@@ -175,6 +181,8 @@ class Dialog_Start(Gtk.Dialog):
             start = YD.start()
         else:
             start = YD.start(dirs=self.entry_excludedirs.get_text())
+        with open(f'Exclude-Dirs.txt', 'w') as file_txt:
+            file_txt.write(self.entry_excludedirs.get_text())
         
         # Sincronisación
         sync_iter = self.combobox_sync.get_active_iter()
