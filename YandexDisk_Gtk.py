@@ -1,7 +1,7 @@
 import Modulo_Util as Util
 import Modulo_Util_Gtk as Util_Gtk
 import Modulo_YandexDisk as YD
-import os, pathlib, subprocess
+import pathlib
 
 import gi
 
