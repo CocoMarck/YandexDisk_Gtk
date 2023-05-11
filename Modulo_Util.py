@@ -141,7 +141,7 @@ def Name(nme=''):
 
 
 
-def Path(pth, sys=sys):
+def Path(pth='', sys=sys):
 #    pth = ''
     CleanScreen()
     pth_fin = ''
@@ -157,7 +157,10 @@ def Path(pth, sys=sys):
         if sys == 'win':
             pth = (os.path.join(os.path.join(os.environ['USERPROFILE']),
                    'Desktop'))
-        elif sys == 'linux': pth = '$HOME/'
+        elif sys == 'linux': 
+            pth = subprocess.check_output(
+                'echo $HOME', shell=True, text=True
+            ).replace('\n', '')
         else: pass
 
     try: pth_laststr = pth[-1]
