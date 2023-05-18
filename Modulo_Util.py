@@ -218,6 +218,33 @@ def Text_Read(file_and_path='', opc='ModeList'):
     else: text_final = 'No existe ese texto'
 
     return text_final
+    
+
+def Ignore_Comment(text='Hola #Texto', comment='#'):
+    if (
+        '\n' in text and
+        comment in text
+    ):
+        # Cuando hay saltos de linea y comentarios
+        
+        text_ready = ''
+        for line in text.split('\n'):
+            line = Ignore_Comment(text=line, comment=comment)
+            text_ready += f'{line}\n'
+            
+        text = text_ready[:-1]
+        
+    elif comment in text:
+        # Cuando hay comentarios pero no saltos de linea
+
+        text = text.split(comment)
+        text = text[0]
+        
+    else:
+        # No hay nada de comenarios
+        pass
+        
+    return text
 
     
 def Command_Run(cmd='dir'):
@@ -243,12 +270,7 @@ def Command_Run(cmd='dir'):
 
     cmd = cmd.replace("'", '"')
     
-    line_go = []
-    for line in txt.split('\n'):
-        if not line.startswith('#'):
-            line_go.append(line)
-        
-    txt = ('\n'.join(line_go)).replace('\n', ' ')
+    txt = Ignore_Comment(text=txt, comment='#').replace('\n', ' ')
     
     print(f'{txt} {smb}{cmd}{smb}')
     os.system(f'{txt} {smb}{cmd}{smb}')
