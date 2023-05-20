@@ -48,21 +48,21 @@ class Window_Main(Gtk.Window):
         # Fin, Mostrar contenedor y su contenido
         self.add(vbox_main)
         
-    def evt_login(self, QWidget):
+    def evt_login(self, widget):
         dialog = Util_Gtk.Dialog_Command_Run(
             self, cfg=YD.token()
         )
         dialog.run()
         dialog.destroy()
         
-    def evt_status(self, QWidget):
+    def evt_status(self, widget):
         dialog = Util_Gtk.Dialog_Command_Run(
             self, cfg=YD.status()
         )
         dialog.run()
         dialog.destroy()
         
-    def evt_help(self, QWidget):
+    def evt_help(self, widget):
         dialog = Util_Gtk.Dialog_Command_Run(self, cfg=YD.help())
         dialog.run()
         dialog.destroy()
@@ -94,7 +94,7 @@ class Dialog_Start(Gtk.Dialog):
         vbox_main.set_property("expand", True)
         
         # Seccion Vertical 1 - Carpeta
-        self.text_path = ''
+        self.text_path = None
         button_path = Gtk.Button(label='Carpeta')
         button_path.connect('clicked', self.evt_path)
         vbox_main.pack_start(button_path, True, False, 0)
@@ -151,7 +151,7 @@ class Dialog_Start(Gtk.Dialog):
         self.get_content_area().add(vbox_main)
         self.show_all()
         
-    def evt_path(self, QWidget):
+    def evt_path(self, widget):
         dialog = Gtk.FileChooserDialog(
             title='Carpeta para Yandex Disk',
             parent=self,
@@ -168,11 +168,11 @@ class Dialog_Start(Gtk.Dialog):
             self.text_path = dialog.get_filename()
         elif response == Gtk.ResponseType.CANCEL:
             self.label_path.set_text('')
-            self.text_path = dialog.get_filename()
+            self.text_path = None
             
         dialog.destroy()
         
-    def evt_start(self, QWidget):
+    def evt_start(self, widget):
         # Carpeta
         path = YD.setPath(self.text_path)
 
