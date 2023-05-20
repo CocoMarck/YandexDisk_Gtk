@@ -47,12 +47,6 @@ def sync(opc=''):
     return sync
     
 def setPath(dir_YD=None):
-    # Carpeta
-    #if dir_YD == None:
-    #    dir_YD = f'{Util.Path()}Yandex-Disk'
-    #else:
-    #    pass
-
     # Si el Archivo existe
     if pathlib.Path(f'{path}/config.cfg').exists():
         # Leer el archivo config.cfg
