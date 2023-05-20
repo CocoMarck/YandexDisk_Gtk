@@ -4,9 +4,13 @@ import subprocess, os, pathlib
 
 need = 'yandex-disk'
 
+home = subprocess.check_output(
+    'echo $HOME', shell=True, text=True
+).replace('\n', '')
+
 path = (
-    Util.Path() +
-    '.config/yandex-disk'
+    home +
+    '/.config/yandex-disk'
 )
     
 
@@ -49,14 +53,14 @@ def sync(opc=''):
 def setPath(dir_YD=''):
     # Carpeta
     if dir_YD == '':
-        dir_YD = f'{Util.Path()}Yandex-Disk'
+        dir_YD = f'{home}/Yandex-Disk'
     else:
         pass
     
     if pathlib.Path(dir_YD).exists():
-        mkdir = f'# La carpeta es "{dir_YD}"'
+        mkdir = f'# La carpeta es {dir_YD}'
     else:
-        dir_YD = f'{Util.Path()}Yandex-Disk'
+        dir_YD = f'{home}/Yandex-Disk'
         mkdir = f'mkdir {dir_YD} &&'
 
     # Archivo
@@ -75,7 +79,7 @@ def setPath(dir_YD=''):
     
         with open(f'Path-Config.txt', 'w') as source_file:
             source_file.write(text)
-        file_replace = f'cp ./Path-Config.txt "{path}/config.cfg"'
+        file_replace = f'cp ./Path-Config.txt {path}/config.cfg'
     else:
         file_replace = '# Sin archivo, no se detecto Yandex-Disk'
     
