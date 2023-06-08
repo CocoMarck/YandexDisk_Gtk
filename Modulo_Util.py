@@ -1,6 +1,9 @@
 '''Modulo de prueba para usar en mis programas jejej'''
 
 import os, platform, pathlib, subprocess
+import shutil
+from distutils.dir_util import copy_tree
+from glob import glob
 
 
 def System(opc = 'System'):
@@ -215,7 +218,7 @@ def Text_Read(file_and_path='', opc='ModeList'):
 
         else: text_final = text_read
         
-    else: text_final = 'No existe ese texto'
+    else: text_final = ''
 
     return text_final
     
@@ -276,3 +279,317 @@ def Command_Run(cmd='dir'):
     os.system(f'{txt} {smb}{cmd}{smb}')
     #print(f'{txt} execute {cmd}')
     #subprocess.Popen([txt, '-e', cmd], stdin=subprocess.PIPE)
+    
+    
+def Files_List(files='', path='', remove_path=False):
+    # Buscar archivos
+    search_files = sorted(
+        pathlib.Path(path)
+        .glob(files)
+    )
+    
+    # Agregar los archivos buscados a una lista
+    files_list = []
+    for file_text in search_files:
+        # Convertir el objeto pathlib a str
+        file_text = str( pathlib.Path(file_text) )
+
+        # Remplazar o no el path
+        if remove_path == True:
+            file_text = file_text.replace(path, '')
+        else:
+            pass
+        
+        # Agregar el archivo a la lista de archivos
+        files_list.append( file_text )
+    
+    return files_list
+    
+
+def Files_Copy(src='', dst=''):
+    '''
+    Copia archivos a una ruta especificada
+    '''
+    
+    state = 'Copy Ready'
+
+    # Detectar si es una carpeta
+    if os.path.isdir(src):
+        dst = f'{Path(dst)}{src}'
+        Create_Dir(file_dir=dst)
+        copy_tree(src, dst)
+    # Detectar si es un archivo
+    elif os.path.isfile(src):
+        shutil.copy(src, dst)
+    else:
+        state = 'ERROR - source no exists'
+        
+    return state
+
+    
+def Text_Separe(text='', text_separe='='):
+    '''Para separar el texto en 2 y almacenarlo en un diccionario'''
+
+    text_dict = {}
+    if (
+        '\n' in text and
+        text_separe in text
+    ):
+        # Cuando hay saltos de linea y separador
+        for line in text.split('\n'):
+            line = Text_Separe(text=line, text_separe=text_separe)
+            for key in line.keys():
+                text_dict.update( {key : line[key]} )
+
+    elif text_separe in text:
+        # Cuando solo hay separador
+        text = text.split(text_separe)
+        text_dict.update( {text[0] : text[1]} )
+    else:
+        pass
+    
+    return text_dict
+    
+    
+def View_echo(text=None):
+    if (
+        sys == 'linux' or
+        sys == 'win'
+    ):
+        text = subprocess.check_output(
+                f'echo {text}',
+                shell=True,
+                text=True
+            ).replace('\n', '')
+    else:
+        pass
+
+    return text
+    
+
+def Create_Dir(file_dir=''):
+    if pathlib.Path(file_dir).exists():
+        # Carpeta ya existente, por lo tanto no se creara
+        pass
+        
+    else:
+        # Intentar Crear carpeta, porque no existe.
+        try:
+            # Separador de slash
+            if sys == 'linux':
+                slash = '/'
+            elif sys == 'win':
+                slash = '\\'
+            else:
+                pass
+                
+            # Separar Carpetas basado en los slash
+            dir_ready = ''
+            for text_dir in file_dir.split(slash):
+                dir_ready = f'{dir_ready}{slash}{text_dir}'
+
+                if pathlib.Path(dir_ready).exists():
+                    # Si existe la carpeta
+                    pass
+                else:
+                    # Si no existe la carpeta
+                    os.mkdir(dir_ready)
+        except:
+            pass
+            
+
+def Execute_DirectAccess(
+        name='',
+        version=1.0,
+        execute='',
+        path='',
+        categories=[''],
+        comment='',
+        icon='',
+        terminal=False,
+        path_DirectAccess=''
+    ):
+    '''
+    Para crear un acceso directo.
+    
+    Recuerda que el parametro execute, se refiere a la aplicación que quieras ejecutar, por medio del acceso directo.
+    
+    Y path_DirectAccess, se refiere a la ruta de cración del acceso directo. Podriamos decir que es un parametro opcional, ya que la mayoria de veces, es mejor dejarlo sin llenar.
+
+    Pide como parametros:
+    version=float,
+    name=str,
+    execute=str,
+    path=str,
+    categories=list[str],
+    comment=str,
+    icon=str,
+    terminal=bool,
+    path_DirectAccess=str
+    '''
+    # Si existe el path y entonces se seguira
+    if pathlib.Path(path).exists():
+        # Si existe la aplicación, entonces se sigue
+        go = True
+        
+        # Verificar la existencia del nombre
+        if name == '':
+            name = 'NoName'
+        else:
+            pass
+            
+        # Verificar que la version sea un float
+        if type(version) is float:
+            pass
+        else:
+            version=1.0
+        
+        # Verificar que el icono exista
+        if pathlib.Path(icon).exists():
+            pass
+        else:
+            icon = ''
+            
+        # Verificar que las categorias sean una lista
+        if type(categories) is list:
+            pass
+        else:
+            categories = ['']
+            
+        # Verificar que el parametro terminal sea un boleano
+        if type(terminal) is bool:
+            if sys == 'linux':
+                # Solo en linux
+                if terminal == True:
+                    terminal = 'true'
+                else:
+                    terminal = 'false'
+            else:
+                pass
+        else:
+            terminal = False
+
+    else:
+        # Si no existe el path y el app no se seguira
+        go = False
+
+    
+    # Si se cumplen los requisitos, para crear el acceso directo
+    if go == True:
+        # Poner la lista de categorias en una variable tipo str
+        categories_ready = ''
+        for categorie in categories:
+            categorie = str(categorie)
+            categories_ready += categorie
+            if categorie == '':
+                pass
+            else:
+                categories_ready += ';'
+        categories_ready = categories_ready.replace('\n','')
+        
+        # Verificar o establecer el path necesario para el acceso directo
+        if path_DirectAccess == '':
+            if sys == 'linux':
+                path_DirectAccess = View_echo(
+                    text='$HOME/.local/share/applications/'
+                )
+            elif sys == 'win':
+                path_DirectAccess = View_echo(
+                    '%USERPROFILE%'
+                    '\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\'
+                )
+            else:
+                pass
+        else:
+            pass
+        if pathlib.Path(path_DirectAccess).exists():
+            pass
+        else:
+            Create_Dir( path_DirectAccess )
+
+        # Texto necesario para el acceso directo
+        if sys == 'linux':
+            type_DirectAccess = '.desktop'
+        
+            text_DirectAccess = (
+                '[Desktop Entry]\n'
+                'Encoding=UTF-8\n'
+                'Type=Application\n'
+                f'Version={version}\n'
+                f'Name={name}\n'
+                f'Comment={comment}\n'
+                f'Icon={Path(path)}{icon}\n'
+                f'Exec={execute}\n'
+                f'Path={path}\n'
+                f'Terminal={terminal}\n'
+                f'Categories={categories_ready}'
+            )
+        elif sys == 'win':
+            type_DirectAccess = '.vbs'
+
+            if terminal == True:
+                with open(f'{Path(path)}{name}.bat', 'w') as text_exec:
+                    text_exec.write(
+                        '@echo off\n'
+                        f'{execute}\n'
+                        'pause'
+                    )
+                execute = f'{name}.bat'
+
+            else:
+                pass
+        
+            text_DirectAccess = (
+                # Objeto para acceder a la shell
+                'Set objShell = WScript.CreateObject("WScript.SHell")\n\n'
+
+                # Objeto DirectAccess - Crear acceso directo
+                'Set objDirectAccess = objShell.CreateShortcut'
+                f'("{path_DirectAccess}{name}.Lnk")\n'
+                
+                # Objeto DirectAccess - Aplicacion a ejecutar
+                '    objDirectAccess.TargetPath = '
+                f'"{Path(path)}{execute}"\n'
+                
+                # DirectAccess - Parametro de carpeta de trabajo
+                f'    objDirectAccess.WorkingDirectory = "{path}"\n'
+                
+                # DierctAccess - Parametro de comentario
+                f'    objDirectAccess.Description = "{comment}"\n'
+                
+                # DirectAccess - Parametro de icono
+                '    objDirectAccess.IconLocation = '
+                f'"{Path(path)}{icon}"\n\n'
+                
+                # Fin, para guardar el acceso directo
+                'objDirectAccess.Save'
+            )
+        else: pass
+            
+        
+        # Establecer el acceso directo, con el path y el name indicados
+        # Tambien darle permisos de ejecución
+        DirectAccess = name + type_DirectAccess
+        
+        if sys == 'linux':
+            with open(
+                path_DirectAccess + DirectAccess,
+                'w'
+            ) as DirectAccess_ready:
+                DirectAccess_ready.write(text_DirectAccess)
+
+            os.system(f'chmod +x "{path_DirectAccess + DirectAccess}"')
+
+        elif sys == 'win':
+            with open(DirectAccess, 'w') as DirectAccess_ready:
+                DirectAccess_ready.write(text_DirectAccess)
+        
+            os.system(f'"{DirectAccess}"')
+            #os.remove(DirectAccess)
+        else:
+            pass
+        
+    # Si no se cumple los requisitos, entonces no se hace nada
+    else:
+        pass
+        
