@@ -3,9 +3,11 @@ import Modulo_Util as Util
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
+
 
 sys = Util.System()
+
 
 class Dialog_TextView(Gtk.Dialog):
     def __init__(
@@ -95,3 +97,36 @@ class Dialog_Command_Run(Gtk.Dialog):
                 
         Util.Command_Run(self.cfg)
         self.destroy()
+
+
+class Dialog_Wait(Gtk.Dialog):
+    def __init__(self, parent, text='Wait please'):
+        super().__init__(title='Wait', transient_for=parent, flags=0)
+        self.set_default_size(256, 128)
+        
+        # Contenedor Principal - VBox
+        vbox_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
+        vbox_main.set_property("expand", True)
+        
+        # Seccion Vertical - Label
+        label = Gtk.Label(label=text)
+        vbox_main.pack_start(label, True, True, 0)
+        
+        # Seccion Vertical - Progress Bar bailarin
+        self.progress_bar = Gtk.ProgressBar()
+        self.progress_bar.pulse()
+        vbox_main.pack_end(self.progress_bar, True, False, 0)
+        
+        self.timeout_id = GLib.timeout_add(
+            100,
+            self.on_timeout,
+            None
+        )
+        
+        # Fin, agregar contenedor principal VBox
+        self.get_content_area().add(vbox_main)
+        self.show_all()
+    
+    def on_timeout(self, user_data):
+        self.progress_bar.pulse()
+        return True
