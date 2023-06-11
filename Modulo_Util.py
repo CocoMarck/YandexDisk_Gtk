@@ -126,8 +126,12 @@ def Continue(
                 opc = Continue(txt=txt, lang=lang, loop = False)
         else:
             loop = False
-            input(f'Esa opción no existe\n'
-                  'Precione enter para continuar...')
+            if txt == '':
+                input('Esa opción no existe\n'
+                      'Precione enter para continuar...')
+            else:
+                input(f'No exite la opcion "{txt}"\n'
+                      'Precione enter para continuar...')
         
     return opc
 
