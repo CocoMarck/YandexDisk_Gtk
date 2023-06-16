@@ -4,17 +4,21 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib
+from Modulo_Language import Language
 
 
 sys = Util.System()
+lang = Language()
 
 
 class Dialog_TextView(Gtk.Dialog):
     def __init__(
         self, parent,
-        text = 'Texto\nSalto de linea y etc...'
+        text = f'{lang["text"]}...'
     ):
-        super().__init__(title='Text', transient_for=parent, flags=0)
+        super().__init__(
+            title=lang['text'], transient_for=parent, flags=0
+        )
         self.set_default_size(512, 256)
 
         box_v = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -35,7 +39,7 @@ class Dialog_TextView(Gtk.Dialog):
         exit_box = Gtk.Box(spacing=4)
         box_v.pack_start(exit_box, False, True, 0)
         
-        exit_btn = Gtk.Button(label='Salir')
+        exit_btn = Gtk.Button( label=lang['exit'] )
         exit_btn.connect('clicked', self.evt_exit)
         exit_box.pack_start(exit_btn, True, True, 0)
         
@@ -48,15 +52,23 @@ class Dialog_TextView(Gtk.Dialog):
 
 
 class Dialog_Command_Run(Gtk.Dialog):
-    def __init__(self, parent, cfg='', txt='Command Run', cfg_file=''):
-        super().__init__(title='Command', transient_for=parent, flags=0)
+    def __init__(
+        self,
+        parent, cfg='',
+        txt=lang['exec'],
+        cfg_file=''
+    ):
+        super().__init__(
+            title=f"{lang['cmd']} - {lang['exec']}",
+            transient_for=parent, flags=0
+        )
         self.set_default_size(512, 256)
         self.cfg = cfg
         self.cfg_file = cfg_file
         
         title_HeaderBar = Gtk.HeaderBar()
         title_HeaderBar.set_show_close_button(True)
-        title_HeaderBar.props.title = 'Command'
+        title_HeaderBar.props.title = lang['cmd']
         self.set_titlebar(title_HeaderBar)
         
         box_v = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
@@ -100,8 +112,11 @@ class Dialog_Command_Run(Gtk.Dialog):
 
 
 class Dialog_Wait(Gtk.Dialog):
-    def __init__(self, parent, text='Wait please'):
-        super().__init__(title='Wait', transient_for=parent, flags=0)
+    def __init__(self, parent, text=lang['help_wait']):
+        super().__init__(
+            title=lang['help_wait'],
+            transient_for=parent, flags=0
+        )
         self.set_default_size(256, 128)
         
         # Contenedor Principal - VBox
