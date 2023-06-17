@@ -227,7 +227,8 @@ def Translate(
             # Alistar texto
             list_text.append(text)
         except:
-            list_text = lang.values()
+            # No hay interet, asi que, se colocara la traduccion local.
+            list_text = list( lang.values() )
     
     # Declarar dict que tendra el texto.
     dict_lang = {}
