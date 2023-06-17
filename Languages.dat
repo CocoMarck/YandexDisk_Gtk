@@ -9,7 +9,7 @@ es_continue=Continuar
 es_continue_enter=Preciona enter para continuar
 es_install=Instalar
 es_select=Seleccionar
-es_YesNo=s,n
+es_YesNo=Si,No
 es_more_info=Mostrar mas información
 es_set_dir=Elegir directorio
 
@@ -51,7 +51,7 @@ en_continue=Continue
 en_continue_enter=Press enter and continue
 en_install=Install
 en_select=Select
-en_YesNo=y,n
+en_YesNo=Yes,No
 en_more_info=Show more information
 en_set_dir=Choose directory
 

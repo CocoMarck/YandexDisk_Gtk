@@ -150,7 +150,6 @@ def Name(nme=''):
 
 def Path(pth='', sys=sys):
 #    pth = ''
-    CleanScreen()
     pth_fin = ''
     if sys == 'linux':
         pth_fin = '/'
@@ -176,7 +175,6 @@ def Path(pth='', sys=sys):
     else:        
         pth = pth + pth_fin
 
-    CleanScreen()
     return pth
     
 
@@ -596,4 +594,3 @@ def Execute_DirectAccess(
     # Si no se cumple los requisitos, entonces no se hace nada
     else:
         pass
-        
