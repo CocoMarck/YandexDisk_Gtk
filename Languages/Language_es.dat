@@ -1,0 +1,65 @@
+# Español
+# es - Opciones
+option=Selecciona una opción
+exit=Salir
+continue=Continuar
+continue_enter=Preciona enter para continuar
+install=Instalar
+select=Seleccionar
+YesNo=Si,No
+more_info=Mostrar mas información
+set_dir=Elegir directorio
+view_cfg=Ver configuración creada
+start=Iniciar
+rec_video=Grabar Video
+rec_audio=Grabar Audio
+mode=Modo
+set_option=Selecciona una opción
+save_arch=Guardar archivo
+
+# es - Finalizado
+finalized=Finalizado
+bye=Hasta la proxima
+fin_install=Instalación completada
+
+# es - Erroneos
+error_admin=Necesitas permisos de administrador
+error_dir=Directorio incorrecto
+error_parameter=Algún parámetro es incorrecto
+
+# es - Ayuda
+help_wait=Por favor espere
+help=Ayuda
+
+# es - Solo texto
+app=Aplicación
+title=Titulo
+lang=Lenguaje
+dir=Directorio
+ver=Versión
+name=Nombre
+exec=Ejecutar
+icon=Icono
+comment=Comentario
+terminal=Terminal
+categories=Categorias
+wait=Esperar
+text=Texto
+cmd=Comando
+cfg=Configuración
+record=Grabar
+reproduce=Reproducir
+set=Establecer
+disp_audio=Dispositivo de audio
+arch=Archivo
+no_set=Sin establecer
+yes_set=Establecido
+the_cfg_be=La configuración sera
+are_disp=Estos son los dispositivos
+resolution=Resolución
+quality=Calidad
+fps=Fotogramas por segundo
+cpu_use=Uso de CPU
+set_arch=Establesca el archivo
+no_arch=Sin archivo
+see_options=Mira todas las opciones

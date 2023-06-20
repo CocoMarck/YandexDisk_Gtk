@@ -7,14 +7,21 @@ from PyQt6.QtWidgets import(
     QVBoxLayout,
     QHBoxLayout
 )
-import Modulo_Util as Util
+
+from Modulos import Modulo_Util as Util
+from Modulos.Modulo_Language import Language
+
+
+lang = Language()
 
 
 class Dialog_TextEdit(QDialog):
-    def __init__(self, parent=None, text='Default text, waiting text...'):
+    def __init__(
+        self, parent=None, text=f'{lang["text"]}...'
+    ):
         super().__init__(parent)
         
-        self.setWindowTitle('Text')
+        self.setWindowTitle( lang['text'] )
         self.setMinimumWidth(512)
         self.setMinimumHeight(256)
         
@@ -28,7 +35,7 @@ class Dialog_TextEdit(QDialog):
         vbox_main.addWidget(text_edit)
         
         # Seccion Vetical 2 - Boton para salir
-        button_exit = QPushButton('Salir')
+        button_exit = QPushButton( lang['exit'] )
         button_exit.clicked.connect(self.evt_exit)
         vbox_main.addWidget(button_exit)
 
@@ -40,7 +47,7 @@ class Dialog_Command_Run(QDialog):
     def __init__(self, parent=None, cmd='', cfg_file=''):
         super().__init__(parent)
         
-        self.setWindowTitle('Command Run')
+        self.setWindowTitle(f"{lang['cmd']} - {lang['exec']}")
         self.setMinimumWidth(512)
         self.setMinimumHeight(256)
         
@@ -52,7 +59,7 @@ class Dialog_Command_Run(QDialog):
         self.setLayout(vbox_main)
         
         # Seccion Vrtical - Label
-        label = QLabel('Comando:')
+        label = QLabel(f'{lang["cmd"]}:')
         vbox_main.addWidget(label)
         
         # Seccion Vertical - Text Edit
@@ -61,7 +68,7 @@ class Dialog_Command_Run(QDialog):
         vbox_main.addWidget(text_edit)
         
         # Seccion Vertical - Boton Ejecutar comando
-        button_cmdRun = QPushButton('Ejecutar comando')
+        button_cmdRun = QPushButton( lang['exec'] )
         button_cmdRun.clicked.connect(self.evt_command_run)
         vbox_main.addWidget(button_cmdRun)
         
@@ -78,10 +85,10 @@ class Dialog_Command_Run(QDialog):
 
 
 class Dialog_Wait(QDialog):
-    def __init__(self, parent=None, text='Wait please'):
+    def __init__(self, parent=None, text=lang['help_wait']):
         super().__init__(parent)
         
-        self.setWindowTitle('Wait')
+        self.setWindowTitle( lang['wait'] )
         self.setGeometry(100, 100, 256, 128)
         
         # Contenedor Pincipal

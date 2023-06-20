@@ -255,7 +255,7 @@ def Ignore_Comment(text='Hola #Texto', comment='#'):
 def Command_Run(cmd='dir'):
     '''Se encarga de abrir una consola/terminal y ejecutar un comando espeficificado'''
     if sys == 'win':
-        txt = Text_Read('Modulo_Util_Win.dat', 'ModeText')
+        txt = Text_Read('./data/Modulo_Util_Win.dat', 'ModeText')
         smb = '"'
         
         cmd = (
@@ -264,7 +264,7 @@ def Command_Run(cmd='dir'):
         cmd.replace('\n', ' ')
         
     elif sys == 'linux':
-        txt = Text_Read('Modulo_Util_Linux.dat', 'ModeText')
+        txt = Text_Read('./data/Modulo_Util_Linux.dat', 'ModeText')
         smb = "'"
         
         cmd = (

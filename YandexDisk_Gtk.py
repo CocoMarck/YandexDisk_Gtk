@@ -1,6 +1,6 @@
-import Modulo_Util as Util
-import Modulo_Util_Gtk as Util_Gtk
-import Modulo_YandexDisk as YD
+from Modulos import Modulo_Util as Util
+from Modulos import Modulo_YandexDisk as YD
+from Interface import Modulo_Util_Gtk as Util_Gtk
 import pathlib
 
 import gi

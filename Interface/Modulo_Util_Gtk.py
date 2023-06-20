@@ -1,10 +1,10 @@
-import Modulo_Util as Util
-
 import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib
-from Modulo_Language import Language
+
+from Modulos import Modulo_Util as Util
+from Modulos.Modulo_Language import Language
 
 
 sys = Util.System()

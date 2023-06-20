@@ -1,0 +1,68 @@
+set_lang=
+
+
+# Idioma Ingles
+# en - Options
+option=Select an option
+exit=Exit
+continue=Continue
+continue_enter=Press enter and continue
+install=Install
+select=Select
+YesNo=Yes,No
+more_info=Show more information
+set_dir=Choose directory
+view_cfg=See configuration created
+start=Start
+rec_video=Record Video
+rec_audio=Record Audio
+mode=Mode
+set_option=Select an option
+save_arch=Save File
+
+# en - Finalized
+finalized=Finalized
+bye=See you soon
+fin_install=Installation completed
+
+# en - Error
+error_admin=You need administrator permissions
+error_dir=Wrong directory
+error_parameter=Some parameter is wrong
+
+# en - Help
+help_wait=Please wait
+help=Help
+
+# en - Only Text
+app=Application
+title=Title
+lang=Language
+dir=Directory
+ver=Version
+name=Name
+exec=Execute
+icon=Icon
+comment=Comment
+terminal=Terminal
+categories=Categories
+wait=Wait
+text=Text
+cmd=Command
+cfg=Configuration
+record=Record
+reproduce=Reproduce
+set=Set
+disp_audio=Audio device
+arch=Archive
+no_set=Not set
+yes_set=Established
+the_cfg_be=The configuration will be
+are_disp=These are the devices
+resolution=Resolution
+quality=Quality
+fps=Frames per second
+cpu_use=CPU usage
+set_arch=Set the file
+no_arch=Don't file
+see_options=See the all options
