@@ -1,6 +1,7 @@
 from Modulos import Modulo_Util as Util
 from Modulos import Modulo_YandexDisk as YD
 from Interface import Modulo_Util_Gtk as Util_Gtk
+from Modulos.Modulo_Language import get_text as Lang
 import pathlib
 
 import gi
@@ -19,17 +20,17 @@ class Window_Main(Gtk.Window):
         vbox_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         
         # Seccion Vertical 1 - Iniciar sesion
-        button_login = Gtk.Button(label='Iniciar sesion')
+        button_login = Gtk.Button(label=Lang('login') )
         button_login.connect('clicked', self.evt_login)
         vbox_main.pack_start(button_login, True, False, 0)
         
         # Seccion Vertical 3 - Estado-Status
-        button_status = Gtk.Button(label='Estado de conección')
+        button_status = Gtk.Button(label=Lang('connect_status') )
         button_status.connect('clicked', self.evt_status)
         vbox_main.pack_start(button_status, True, False, 0)
         
         # Seccion Vertical 2 - Ayuda
-        button_help = Gtk.Button(label='Ayuda')
+        button_help = Gtk.Button(label=Lang('help') )
         button_help.connect('clicked', self.evt_help)
         vbox_main.pack_start(button_help, True, False, 0)
         
@@ -37,7 +38,9 @@ class Window_Main(Gtk.Window):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         vbox_main.pack_start(hbox, True, False, 0)
         
-        label_start = Gtk.Label(label='Parar / Iniciar')
+        label_start = Gtk.Label(
+            label=f'{Lang("stop")} / {Lang("start")}'
+        )
         hbox.pack_start(label_start, False, True, 0)
         
         switch_start = Gtk.Switch()
@@ -95,7 +98,9 @@ class Dialog_Start(Gtk.Dialog):
         
         # Seccion Vertical 1 - Carpeta
         self.text_path = None
-        button_path = Gtk.Button(label='Carpeta')
+        button_path = Gtk.Button(
+            label=f"{Lang('set_dir')} / Yandex-Disk"
+        )
         button_path.connect('clicked', self.evt_path)
         vbox_main.pack_start(button_path, True, False, 0)
         
@@ -107,7 +112,7 @@ class Dialog_Start(Gtk.Dialog):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         vbox_main.pack_start(hbox, True, False, 0)
         
-        label_excludedirs = Gtk.Label(label='Excluir Directorios:')
+        label_excludedirs = Gtk.Label(label=f"{Lang('exclude_dirs')}:")
         hbox.pack_start(label_excludedirs, False, False, 0)
         
         self.entry_excludedirs = Gtk.Entry()
@@ -124,13 +129,15 @@ class Dialog_Start(Gtk.Dialog):
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         vbox_main.pack_start(hbox, True, False, 0)
         
-        label_sync = Gtk.Label(label='Sincronisar / Modo:')
+        label_sync = Gtk.Label(
+            label=f'{Lang("sync")} / {Lang("mode")}:'
+        )
         hbox.pack_start(label_sync, False, False, 0)
         
         liststore_sync = Gtk.ListStore(str)
         options_sync = [
-            'Por defecto',
-            'Solo lectura'
+            Lang('default'),
+            Lang('read_only')
         ]
         for option in options_sync:
             liststore_sync.append([option])
@@ -143,7 +150,7 @@ class Dialog_Start(Gtk.Dialog):
         hbox.pack_end(self.combobox_sync, False, False, 0)
         
         # Seccion Vertical Final - Iniciar
-        button_start = Gtk.Button(label='Iniciar y Sincronisar')
+        button_start = Gtk.Button(label=Lang('start&sync') )
         button_start.connect('clicked', self.evt_start)
         vbox_main.pack_end(button_start, True, False, 0)
         
@@ -153,18 +160,18 @@ class Dialog_Start(Gtk.Dialog):
         
     def evt_path(self, widget):
         dialog = Gtk.FileChooserDialog(
-            title='Carpeta para Yandex Disk',
+            title=Lang('dir_main'),
             parent=self,
             action=Gtk.FileChooserAction.SELECT_FOLDER
         )
         dialog.add_buttons(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            'Seleccionar', Gtk.ResponseType.OK
+            Lang('set'), Gtk.ResponseType.OK
         )
         
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            self.label_path.set_text('Carpeta seleccionada')
+            self.label_path.set_text(Lang('set_dir') )
             self.text_path = dialog.get_filename()
         elif response == Gtk.ResponseType.CANCEL:
             self.label_path.set_text('')
@@ -188,9 +195,9 @@ class Dialog_Start(Gtk.Dialog):
         sync_iter = self.combobox_sync.get_active_iter()
         sync_model = self.combobox_sync.get_model()
         sync = sync_model[sync_iter][0]
-        if sync == 'Por defecto':
+        if sync == Lang('default'):
             sync = YD.sync('')
-        elif sync == 'Solo lectura':
+        elif sync == Lang('read_only'):
             sync = YD.sync('read')
         
         # Ejecutar comando
