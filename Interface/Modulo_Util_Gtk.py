@@ -3,6 +3,8 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib
 
+import threading
+
 from Modulos import Modulo_Util as Util
 from Modulos.Modulo_Language import Language
 
@@ -101,14 +103,26 @@ class Dialog_Command_Run(Gtk.Dialog):
         self.show_all()
         
     def evt_command_run(self, widget):
+        # Destruir dialogo
+        self.destroy()
+        
+        # Subproceso al precionar el boton ejecutar
+        self.thread = threading.Thread(
+            target=self.thread_command_run
+        )
+        self.thread.start()
+    
+    def thread_command_run(self):
+        # Subproceso, ejecutando programa
         if self.cfg_file == '':
             pass
         else:
             with open(self.cfg_file, 'a') as file_cfg:
-                    file_cfg.write(self.cfg + f'\n#{Util.Separator(see=False)}\n')
+                    file_cfg.write(
+                        self.cfg + f'\n#{Util.Separator(see=False)}\n'
+                    )
                 
         Util.Command_Run(self.cfg)
-        self.destroy()
 
 
 class Dialog_Wait(Gtk.Dialog):
