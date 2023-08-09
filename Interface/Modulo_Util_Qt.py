@@ -1,3 +1,15 @@
+from os.path import isfile
+from Modulos.Modulo_System import(
+    Command_Run
+)
+from Modulos.Modulo_Text import(
+    Text_Read
+)
+from Modulos.Modulo_ShowPrint import(
+    Separator
+)
+from Modulos.Modulo_Language import Language
+
 from PyQt6.QtWidgets import(
     QWidget,
     QDialog,
@@ -8,38 +20,76 @@ from PyQt6.QtWidgets import(
     QHBoxLayout
 )
 
-from Modulos import Modulo_Util as Util
-from Modulos.Modulo_Language import Language
-
 
 lang = Language()
 
 
 class Dialog_TextEdit(QDialog):
     def __init__(
-        self, parent=None, text=f'{lang["text"]}...'
+        self, parent=None,
+        text=f'{lang["text"]}...',
+        edit=False
     ):
         super().__init__(parent)
         
         self.setWindowTitle( lang['text'] )
-        self.setMinimumWidth(512)
-        self.setMinimumHeight(256)
+        self.resize(512, 256)
+        
+        # Verificar si el Text Edit es editable
+        if edit == True:
+            self.text_file = text
+            ReadOnly = False
+        else:
+            ReadOnly = True
+        self.edit = edit
+        
+        # Verificar si texto, es un archivo
+        if isfile(text):
+            # Si lo es, el titulo sera el archivo
+            self.setWindowTitle(text)
+            
+            # Si lo es, entonces se leera
+            text = Text_Read(
+                file_and_path=text,
+                option='ModeText'
+            )
+            self.text_isfile = True
+        else:
+            # Si no es un texto, no pasa nada.
+            self.text_isfile = False
         
         # Contenedor Principal
         vbox_main = QVBoxLayout()
         self.setLayout(vbox_main)
         
         # Seccion Vertical 1 - Text Edit
-        text_edit = QTextEdit(str(text).replace('\n', '<br>'))
-        text_edit.setReadOnly(True)
-        vbox_main.addWidget(text_edit)
+        self.text_edit = QTextEdit(str(text).replace('\n', '<br>'))
+        self.text_edit.setReadOnly(ReadOnly)
+        vbox_main.addWidget(self.text_edit)
         
         # Seccion Vetical 2 - Boton para salir
-        button_exit = QPushButton( lang['exit'] )
-        button_exit.clicked.connect(self.evt_exit)
-        vbox_main.addWidget(button_exit)
+        if (
+            self.text_isfile == True and
+            self.edit == True
+        ):
+            text_button = lang['save_arch']
+        else:
+            text_button = lang['exit']
+        button_exit_or_save = QPushButton( text_button )
+        button_exit_or_save.clicked.connect(self.evt_exit_or_save)
+        vbox_main.addWidget(button_exit_or_save)
 
-    def evt_exit(self):
+    def evt_exit_or_save(self):
+        if (
+            self.text_isfile == True and
+            self.edit == True
+        ):
+            with open(self.text_file, 'w') as archive:
+                archive.write( 
+                    self.text_edit.toPlainText()
+                )
+        else:
+            pass
         self.close()
         
 
@@ -79,9 +129,13 @@ class Dialog_Command_Run(QDialog):
             pass
         else:
             with open(self.cfg_file, 'a') as cfg_file:
-                cfg_file.write(self.cmd + f'\n#{Util.Separator(see=False)}\n')
+                cfg_file.write(self.cmd + f'\n{Separator(print_mode=False)}\n')
                 
-        Util.Command_Run(self.cmd)
+        Command_Run(
+            self.cmd,
+            text_input=lang['continue_enter'],
+            open_new_terminal=True
+        )
 
 
 class Dialog_Wait(QDialog):
@@ -89,7 +143,7 @@ class Dialog_Wait(QDialog):
         super().__init__(parent)
         
         self.setWindowTitle( lang['wait'] )
-        self.setGeometry(100, 100, 256, 128)
+        self.resize(256, 128)
         
         # Contenedor Pincipal
         vbox_main = QVBoxLayout()

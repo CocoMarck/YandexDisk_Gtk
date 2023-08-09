@@ -1,0 +1,6 @@
+linux=xterm -e
+# Ejecuta xterm
+# xfce4-terminal --startup-id= -e
+
+win=start cmd /c
+# Ejecuta el CMD de windows

@@ -1,5 +1,7 @@
-import os
-from Modulos import Modulo_Util as Util
+from Modulos.Modulo_System import(
+    CleanScreen,
+    Command_Run
+)
 from Modulos import Modulo_YandexDisk as YD
 from Modulos.Modulo_ShowPrint import (
     Title,
@@ -10,13 +12,14 @@ from Modulos.Modulo_Language import (
     YesNo as LangYN,
     get_text as Lang
 )
+import os
 
 
 def Menu_YandexDisk():
     # Iniciar loop, si loop es True
     loop = True
     while loop == True:
-        Util.CleanScreen()
+        CleanScreen()
         # Menu de opciones, y input de opcion
         Title(f'Yandex Disk')
         print(
@@ -51,7 +54,7 @@ def Menu_YandexDisk():
         # Si el comando esta listo.
         if type(cmd) is str:
             # Visual de continuar o no
-            Util.CleanScreen()
+            CleanScreen()
             print(
                 f'{Lang("cmd")}:\n'
                 f'{cmd}\n'
@@ -60,9 +63,12 @@ def Menu_YandexDisk():
             
             # Opcion elegida
             if option == LangYN('yes'):
-                Util.CleanScreen()
-                os.system(cmd)
-                input(f"{Lang('continue_enter')}...")
+                CleanScreen()
+                Command_Run(
+                    cmd=cmd,
+                    open_new_terminal=False,
+                    text_input=f"{Lang('continue_enter')}..."
+                )
             elif option == LangYN('no'):
                 pass
             else:
@@ -75,7 +81,7 @@ def Menu_YandexDisk():
 
 def start_or_stop():
     # Menu, parte visual de seleccion de opcion
-    Util.CleanScreen()
+    CleanScreen()
     Title('Yandex Disk')
     print(
         f'1. {Lang("start&sync")}\n'

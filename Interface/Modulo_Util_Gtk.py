@@ -1,55 +1,105 @@
+from os.path import isfile
+from Modulos.Modulo_System import(
+    Command_Run
+)
+from Modulos.Modulo_Text import(
+    Text_Read
+)
+from Modulos.Modulo_ShowPrint import(
+    Separator
+)
+from Modulos.Modulo_Language import Language
+
+import threading
 import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib
 
-import threading
 
-from Modulos import Modulo_Util as Util
-from Modulos.Modulo_Language import Language
-
-
-sys = Util.System()
 lang = Language()
 
 
 class Dialog_TextView(Gtk.Dialog):
     def __init__(
         self, parent,
-        text = f'{lang["text"]}...'
+        text = f'{lang["text"]}...',
+        edit=False
     ):
         super().__init__(
             title=lang['text'], transient_for=parent, flags=0
         )
         self.set_default_size(512, 256)
+        
+        # Verificar si el Text View sera es editable
+        if edit == True:
+            self.text_file = text
+        else:
+            pass
+        self.edit = edit
+        
+        # Verificar si texto, es un archivo
+        if isfile(text):
+            # Si lo es, el titulo sera el arhcivo.
+            self.set_title(text)
+            # Si lo es, entonces se leera
+            text = Text_Read(
+                file_and_path=text, 
+                option='ModeText'
+            )
+            self.text_isfile = True
+        else:
+            # So no es texto, no pasa nada
+            self.text_isfile = False
 
+        # Contenedor principal
         box_v = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
 
+        # Seccion Vertical - Text View
         text_scroll = Gtk.ScrolledWindow()
         text_scroll.set_hexpand(True)
         text_scroll.set_vexpand(True)
         
-        text_view = Gtk.TextView()
+        self.text_view = Gtk.TextView()
         #text_view.set_size_request(512, 256)
-        text_view.set_editable(False)
-        text_buffer = text_view.get_buffer()
+        self.text_view.set_editable(edit)
+        text_buffer = self.text_view.get_buffer()
         text_buffer.set_text(text)
-        text_scroll.add(text_view)
+        text_scroll.add(self.text_view)
         
         box_v.pack_start(text_scroll, True, True, 0)
         
-        exit_box = Gtk.Box(spacing=4)
-        box_v.pack_start(exit_box, False, True, 0)
+        # Seccion Vertical Final - Boton para salir o guardar.
+        if (
+            self.text_isfile == True and
+            self.edit == True
+        ):
+            text_button = lang['save_arch']
+        else:
+            text_button = lang['exit']
+        button_exit_or_save = Gtk.Button( label=text_button )
+        button_exit_or_save.connect('clicked', self.evt_exit_or_save)
+        box_v.pack_end(button_exit_or_save, False, True, 0)
         
-        exit_btn = Gtk.Button( label=lang['exit'] )
-        exit_btn.connect('clicked', self.evt_exit)
-        exit_box.pack_start(exit_btn, True, True, 0)
-        
-        box_main = self.get_content_area()
-        box_main.add(box_v)
+        # Fin, Mostar contenedor principal y todo lo demas.
+        self.get_content_area().add(box_v)
         self.show_all()
         
-    def evt_exit(self, widget):
+    def evt_exit_or_save(self, button):
+        if (
+            self.text_isfile == True and
+            self.edit == True
+        ):
+            buffer_text_view = self.text_view.get_buffer()
+            text_text_view = buffer_text_view.get_text(
+                buffer_text_view.get_start_iter(),
+                buffer_text_view.get_end_iter(),
+                False
+            )
+            with open(self.text_file, 'w') as archive:
+                archive.write( text_text_view )
+        else:
+            pass
         self.destroy()
 
 
@@ -119,10 +169,14 @@ class Dialog_Command_Run(Gtk.Dialog):
         else:
             with open(self.cfg_file, 'a') as file_cfg:
                     file_cfg.write(
-                        self.cfg + f'\n#{Util.Separator(see=False)}\n'
+                        self.cfg + f'\n{Separator(print_mode=False)}\n'
                     )
                 
-        Util.Command_Run(self.cfg)
+        Command_Run(
+            cmd=self.cfg,
+            open_new_terminal=True,
+            text_input=lang['continue_enter']
+        )
 
 
 class Dialog_Wait(Gtk.Dialog):

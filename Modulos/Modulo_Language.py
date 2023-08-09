@@ -1,6 +1,13 @@
 import locale
-from . import Modulo_Util as Util
 from pathlib import Path as pathlib
+from .Modulo_Text import (
+    Text_Read,
+    Ignore_Comment,
+    Text_Separe
+)
+from .Modulo_Files import(
+    Files_List
+)
 
 
 lang_dir = 'Languages/'
@@ -20,14 +27,14 @@ def Default_Language():
 
 def Language( lang=Default_Language() ):
     # Leer Archivo languages
-    file_text = Util.Ignore_Comment(
-        Util.Text_Read(
+    file_text = Ignore_Comment(
+        text=Text_Read(
             file_and_path=f'{lang_dir}Language_en.dat',
-            opc='ModeText'
+            option='ModeText'
         )
     )
     # Obtener str de languages
-    file_dict = Util.Text_Separe(
+    file_dict = Text_Separe(
         text=file_text,
         text_separe='='
     )
@@ -63,19 +70,19 @@ def Language( lang=Default_Language() ):
         pathlib(f'{lang_dir}Language_{lang}.dat').exists()
     ):
         # Leer Archivo languages - y eliminar comentarios
-        file_text = Util.Ignore_Comment(
-            Util.Text_Read(
+        file_text = Ignore_Comment(
+            Text_Read(
                 file_and_path=f'{lang_dir}Language_{lang}.dat',
-                opc='ModeText'
+                option='ModeText'
             )
         )
-        file_text = Util.Ignore_Comment(
+        file_text = Ignore_Comment(
             text=file_text,
             comment='set_lang='
         )
 
         # Diccionario - Obtener str de languages
-        file_dict = Util.Text_Separe(
+        file_dict = Text_Separe(
             text=file_text,
             text_separe='='
         )
@@ -136,9 +143,9 @@ def get_text(text='app'):
 def set_lang(set_lang='es'):
     # Archivo de Texto Languages.dat
     # Leer y verificar set_lang
-    text_lang = Util.Text_Read(
+    text_lang = Text_Read(
         file_and_path=f'{lang_dir}Language_en.dat',
-        opc='ModeText'
+        option='ModeText'
     )
 
     # Establecer lang en el archivo Languages.dat
@@ -160,9 +167,9 @@ def set_lang(set_lang='es'):
 def get_lang():
     # Archivo de Texto Languages.dat
     # Leer y verificar set_lang
-    text_lang = Util.Text_Read(
+    text_lang = Text_Read(
         file_and_path=f'{lang_dir}Language_en.dat',
-        opc='ModeText'
+        option='ModeText'
     )
 
     # Verificar la exitensia de la linea set_lang=
@@ -187,7 +194,7 @@ def get_lang():
 
 
 def List_Lang():
-    list_lang = Util.Files_List(
+    list_lang = Files_List(
         files='Language_*.dat',
         path=lang_dir,
         remove_path=True

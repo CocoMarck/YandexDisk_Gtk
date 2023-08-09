@@ -1,1 +1,0 @@
-python3 YandexDisk_Gtk.py

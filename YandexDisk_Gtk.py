@@ -1,7 +1,13 @@
-from Modulos import Modulo_Util as Util
+from Modulos.Modulo_Text import(
+    Text_Read
+)
+from Modulos.Modulo_System import(
+    Command_Run
+)
 from Modulos import Modulo_YandexDisk as YD
 from Interface import Modulo_Util_Gtk as Util_Gtk
 from Modulos.Modulo_Language import get_text as Lang
+import threading
 import pathlib
 
 import gi
@@ -72,16 +78,27 @@ class Window_Main(Gtk.Window):
         
     def evt_start(self, switch, gparam):
         if switch.get_active():
-            dialog = Dialog_Start(self)
-            dialog.run()
-            dialog.destroy()
+            self.hide()
+            dialog_start = Dialog_Start(self)
+            dialog_start.run()
+            dialog_start.destroy()
+            self.show_all()
             #switch.set_active(False) # Para desactivar cuando se cierre.
         else:
-            dialog = Util_Gtk.Dialog_Command_Run(
-                self, cfg=(YD.stop())
-            )
-            dialog.run()
-            dialog.destroy()
+            self.thread = threading.Thread(target=self.thread_stop)
+            self.thread.start()
+            #dialog = Util_Gtk.Dialog_Command_Run(
+            #    self, cfg=(YD.stop())
+            #)
+            #dialog.run()
+            #dialog.destroy()
+    
+    def thread_stop(self):
+        Command_Run(
+            cmd=(YD.stop()),
+            open_new_terminal=True,
+            text_input=Lang('continue_enter')
+        )
 
 
 class Dialog_Start(Gtk.Dialog):
@@ -118,9 +135,14 @@ class Dialog_Start(Gtk.Dialog):
         self.entry_excludedirs = Gtk.Entry()
         self.entry_excludedirs.set_placeholder_text('DIR1,DIR2,...')
         if pathlib.Path('Exclude-Dirs.txt').exists():
-            self.entry_excludedirs.set_text(
-                Util.Text_Read('Exclude-Dirs.txt', 'ModeTextOnly')
+            # Subproceso para leer el archivo de texto.
+            self.thread = threading.Thread(
+                target=self.thread_excludedirs_text
             )
+            self.thread.start()
+            #self.entry_excludedirs.set_text(
+            #    Text_Read('Exclude-Dirs.txt', 'ModeTextOnly')
+            #)
         else:
             pass
         hbox.pack_end(self.entry_excludedirs, False, False, 0)
@@ -157,6 +179,12 @@ class Dialog_Start(Gtk.Dialog):
         # Fin, agragar el contenido
         self.get_content_area().add(vbox_main)
         self.show_all()
+    
+    def thread_excludedirs_text(self):
+        # Aca se bloquea, y no se porque
+        self.entry_excludedirs.set_text(
+            Text_Read('Exclude-Dirs.txt', 'ModeTextOnly')
+        )
         
     def evt_path(self, widget):
         dialog = Gtk.FileChooserDialog(

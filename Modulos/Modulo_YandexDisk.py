@@ -1,11 +1,16 @@
-from . import Modulo_Util as Util
+from .Modulo_Files import(
+    Path as File_Path
+)
+from .Modulo_Text import(
+    Text_Read
+)
 import subprocess, os, pathlib
 
 
 need = 'yandex-disk'
 
 path = (
-    Util.Path() +
+    File_Path() +
     '.config/yandex-disk'
 )
     
@@ -50,9 +55,9 @@ def setPath(dir_YD=None):
     # Si el Archivo existe
     if pathlib.Path(f'{path}/config.cfg').exists():
         # Leer el archivo config.cfg
-        archive = Util.Text_Read(
+        archive = Text_Read(
             file_and_path=f'{path}/config.cfg',
-            opc='ModeText'
+            option='ModeText'
         )
         
         # Variables a utilizar
@@ -74,7 +79,7 @@ def setPath(dir_YD=None):
                     dir_correct = None
                 
             elif line.startswith('#dir='):
-                dir_YD = f'{Util.Path()}Yandex-Disk'
+                dir_YD = f'{File_Path()}Yandex-Disk'
                 mkdir = f'mkdir {dir_YD} &&'
                 
             else:
@@ -87,7 +92,7 @@ def setPath(dir_YD=None):
 
         elif dir_YD == None:
             if dir_correct == None:
-                dir_YD = f'{Util.Path()}Yandex-Disk'
+                dir_YD = f'{File_Path()}Yandex-Disk'
                 if pathlib.Path(str(dir_YD)).exists():
                     mkdir = f'# MODO carpeta Default "{dir_YD}"'
                 else:
@@ -122,6 +127,7 @@ def setPath(dir_YD=None):
             file_replace = f'cp ./Path-Config.txt "{path}/config.cfg"'
 
     else:
+        mkdir = '# Sin crear carpeta, no se detecto Yandex-Disk'
         file_replace = '# Sin archivo, no se detecto Yandex-Disk'
     
     # Configuracion
