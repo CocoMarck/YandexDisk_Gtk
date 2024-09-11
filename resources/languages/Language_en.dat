@@ -1,0 +1,106 @@
+set_lang=
+
+
+# Language English
+# General Option type text
+YesNo=Yes,No
+option=Select an option
+set_option=Select an option
+see_options=See the all options
+start=Start
+stop=Stop
+exit=Exit
+
+# Text Type Continue
+continue=Continue
+continue_enter=Press enter and continue
+
+# Directory type text
+set_dir=Choose directory
+dir=Directory
+exclude_dirs=Exclude directories
+dir_main=Main directory
+error_dir=Wrong directory
+
+# Archive or file type text
+set_arch=Set the file
+no_arch=Don't file
+save_arch=Save File
+arch=Archive
+
+# Configuration type text
+view_cfg=See configuration created
+the_cfg_be=The configuration will be
+cfg=Configuration
+
+# Finalized type text
+finalized=Finalized
+fin_install=Installation completed
+bye=See you soon
+
+# Error type text
+error_admin=You need administrator permissions
+error_parameter=Some parameter is wrong
+
+# Help type text
+help_wait=Please wait
+help=Help
+
+# Connect and desconect type text
+connect_status=Connection status
+
+# Default type text
+default=Default
+
+# Text, Read And Write type text
+read_only=Read Only
+
+# Sync type text
+sync=Sync up
+start&sync=Start and sync
+
+# Register or Login Session type text
+login=Login
+
+# Choosing type text
+set=Choose
+no_set=Without Choosing
+yes_set=Chosen one
+select=Select
+
+# Record or play type text
+record=Record
+rec_video=Record Video
+rec_audio=Record Audio
+reproduce=Reproduce
+
+# Quality-Performanse type text
+resolution=Resolution
+quality=Quality
+fps=Frames per second
+cpu_use=CPU usage
+
+# Dispositives-Devices type text
+disp_audio=Audio device
+are_disp=These are the devices
+
+
+# Only Text type text
+app=Application
+title=Title
+lang=Language
+mode=Mode
+more_info=Show more information
+cmd=Command
+text=Text
+
+# Install-App type text
+ver=Version
+name=Name
+exec=Execute
+icon=Icon
+comment=Comment
+terminal=Terminal
+categories=Categories
+wait=Wait
+install=Install

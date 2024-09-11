@@ -1,12 +1,12 @@
-from Modulos.Modulo_Text import(
+from logic.Modulo_Text import(
     Text_Read
 )
-from Modulos.Modulo_System import(
+from logic.Modulo_System import(
     Command_Run
 )
-from Modulos import Modulo_YandexDisk as YD
-from Interface import Modulo_Util_Gtk as Util_Gtk
-from Modulos.Modulo_Language import get_text as Lang
+from data import Modulo_YandexDisk as YD
+from interface import Modulo_Util_Gtk as Util_Gtk
+from data.Modulo_Language import get_text as Lang
 import threading
 import pathlib
 

@@ -1,14 +1,14 @@
-from Modulos.Modulo_System import(
+from logic.Modulo_System import(
     CleanScreen,
     Command_Run
 )
-from Modulos import Modulo_YandexDisk as YD
-from Modulos.Modulo_ShowPrint import (
+from data import Modulo_YandexDisk as YD
+from interface.Modulo_ShowPrint import (
     Title,
     Separator,
     Continue,
 )
-from Modulos.Modulo_Language import (
+from data.Modulo_Language import (
     YesNo as LangYN,
     get_text as Lang
 )
